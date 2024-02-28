@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Duty, StaffDuty
 
-# Register your models here.
+admin.site.register(Duty)
+admin.site.register(StaffDuty)
