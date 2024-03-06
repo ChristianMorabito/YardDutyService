@@ -3,6 +3,71 @@
 
 {% block content %}
 
-    <h1>HOME PAGE</h1>
+<!--  <h2>Your Staff Duties</h2>-->
+
+<!--  {% if staff_duties %}-->
+<!--    <ul>-->
+<!--      {% for staff_duty in staff_duties %}-->
+<!--        <li>-->
+<!--            {{ staff_duty }}-->
+<!--            <a href="#">confirm</a>-->
+<!--        </li>-->
+<!--      {% endfor %}-->
+<!--    </ul>-->
+<!--  {% else %}-->
+<!--    <p>No staff duties found.</p>-->
+<!--  {% endif %}-->
+
+<!-- my_template.html -->
+<button id="updateButton">Update Duty</button>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const updateButton = document.getElementById('updateButton');
+
+    updateButton.addEventListener('click', function() {
+        // Send AJAX request to update_duty view
+        fetch('/update_duty/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),  // Include CSRF token
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Update UI or perform any other actions
+                console.log('Duty updated successfully');
+            }
+        });
+    });
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+</script>
+
+
+
+
+
+
 
 {% endblock content %}

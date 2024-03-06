@@ -13,8 +13,8 @@ class Duty(models.Model):
 
 	id = models.AutoField(primary_key=True, null=False)
 	day = models.CharField(max_length=3, choices=DAYS_CHOICES, null=False)
-	start = models.TimeField("Start Time", null=False, max_length=4)
-	end = models.TimeField("End Time", null=False)
+	start = models.TimeField("Start Time", max_length=4)
+	end = models.TimeField("End Time")
 	location = models.CharField(max_length=30, null=False)
 
 	class Meta:
@@ -32,6 +32,10 @@ class StaffDuty(models.Model):
 	duty = models.ForeignKey(Duty, on_delete=models.CASCADE)
 	staff = models.ForeignKey(User, on_delete=models.CASCADE)
 	time_date = models.DateTimeField(null=True, editable=False)
+
+	def __str__(self):
+		return (f"{self.staff.__str__()}:\t"
+		        f"{self.duty.__str__()}")
 
 	class Meta:
 		verbose_name = "Assign Staff to Duty"
