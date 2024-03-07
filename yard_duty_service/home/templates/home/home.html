@@ -2,24 +2,19 @@
 
 
 {% block content %}
-
-<!--  <h2>Your Staff Duties</h2>-->
-
-<!--  {% if staff_duties %}-->
-<!--    <ul>-->
-<!--      {% for staff_duty in staff_duties %}-->
-<!--        <li>-->
-<!--            {{ staff_duty }}-->
-<!--            <a href="#">confirm</a>-->
-<!--        </li>-->
-<!--      {% endfor %}-->
-<!--    </ul>-->
-<!--  {% else %}-->
-<!--    <p>No staff duties found.</p>-->
-<!--  {% endif %}-->
-
-<!-- my_template.html -->
-<button id="updateButton">Update Duty</button>
+    <h2>Today's Duties</h2>
+        {% if staff_duties %}
+            <ul>
+        {% for staff_duty in staff_duties %}
+            <li>
+                {{ staff_duty }}
+                <button id="updateButton">Update Duty</button>
+           </li>
+        {% endfor %}
+            </ul>
+        {% else %}
+            <p>No staff duties today.</p>
+        {% endif %}
 
 <script>
 

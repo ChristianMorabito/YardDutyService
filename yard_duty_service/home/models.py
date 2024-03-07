@@ -12,14 +12,14 @@ class Duty(models.Model):
 	]
 
 	id = models.AutoField(primary_key=True, null=False)
-	day = models.CharField(max_length=3, choices=DAYS_CHOICES, null=False)
+	day = models.CharField(max_length=5, choices=DAYS_CHOICES, null=False)
 	start = models.TimeField("Start Time", max_length=4)
 	end = models.TimeField("End Time")
 	location = models.CharField(max_length=30, null=False)
 
 	class Meta:
-		verbose_name = "Set Duty Time"
-		verbose_name_plural = 'Set Duty Times'
+		verbose_name = "Duty"
+		verbose_name_plural = 'Duties'
 
 	def __str__(self):
 		return (f"{self.day}\t"
@@ -38,8 +38,11 @@ class StaffDuty(models.Model):
 		        f"{self.duty.__str__()}")
 
 	class Meta:
-		verbose_name = "Assign Staff to Duty"
-		verbose_name_plural = 'Assign Staff to Duties'
+		verbose_name = "Assign Staff"
+		verbose_name_plural = 'Assign Staff'
+
+
+
 
 
 
