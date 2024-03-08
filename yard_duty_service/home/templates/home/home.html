@@ -5,13 +5,15 @@
     <h2>Today's Duties</h2>
         {% if staff_duties %}
             <ul>
-        {% for staff_duty in staff_duties %}
-            <li>
-                {{ staff_duty }}
-                <button id="updateButton">Update Duty</button>
-           </li>
-        {% endfor %}
-            </ul>
+            {% for sd_instance, sd_bool in staff_duties.items %}
+                <li>
+                    {{ sd_instance }}
+                      {% if sd_bool %}
+                        <button id="updateButton">Update Duty</button>
+                      {% endif %}
+               </li>
+            {% endfor %}
+                </ul>
         {% else %}
             <p>No staff duties today.</p>
         {% endif %}
@@ -22,11 +24,10 @@
     const updateButton = document.getElementById('updateButton');
 
     updateButton.addEventListener('click', function() {
-        // Send AJAX request to update_duty view
         fetch('/update_duty/', {
             method: 'POST',
             headers: {
-                'X-CSRFToken': getCookie('csrftoken'),  // Include CSRF token
+                'X-CSRFToken': getCookie('csrftoken'),
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({}),
@@ -34,13 +35,14 @@
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                // Update UI or perform any other actions
                 console.log('Duty updated successfully');
+            }
+            else {
+                console.log(data.status);
             }
         });
     });
 
-    // Function to get CSRF token from cookies
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {

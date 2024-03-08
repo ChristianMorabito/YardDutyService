@@ -1,20 +1,18 @@
 from django.core.exceptions import ObjectDoesNotExist
-from datetime import datetime, timezone, timedelta
+from django.utils import timezone
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import StaffDuty
 
 
-def get_current_time():
-    current_time_utc = datetime.now(timezone.utc)
-    new_timezone = timezone(timedelta(hours=11))
-    return current_time_utc.astimezone(new_timezone)
-
-
 def get_today():
-    day_of_week = get_current_time().weekday()
     weekday_names = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-    return weekday_names[day_of_week]
+    return weekday_names[(timezone.now() + timezone.timedelta(hours=11)).weekday()]
+
+
+def is_time_range(obj):
+    current_time = timezone.now() + timezone.timedelta(hours=11)
+    return obj.duty.start <= current_time.time() < obj.duty.end
 
 
 def about(request):
@@ -22,16 +20,18 @@ def about(request):
 
 
 def home(request):
-
-    staff_duties = []
+    staff_duties_dict = {}
     today = get_today()
     user = request.user
     try:
-        staff_duties.append(StaffDuty.objects.get(staff=user, duty__day=today))
+        staff_duties = list(StaffDuty.objects.filter(staff=user, duty__day=today))
+        for sd_instance in staff_duties:
+            staff_duties_dict[sd_instance] = is_time_range(sd_instance)
+
     except ObjectDoesNotExist:
         pass
 
-    context = {'title': 'Home', 'staff_duties': staff_duties}
+    context = {'title': 'Home', 'staff_duties': staff_duties_dict}
 
     return render(request, 'home/home.html', context)
 
@@ -39,14 +39,19 @@ def home(request):
 def update_duty(request):
     user = request.user
     today = get_today()
-    status = 'success'
+    status = 'not found'
 
     try:
-        staff_duty_instance = StaffDuty.objects.get(staff=user, duty__day=today)
-        staff_duty_instance.time_date = get_current_time()
-        staff_duty_instance.save()
+
+        staff_duties = list(StaffDuty.objects.filter(staff=user, duty__day=today))
+        for sd_instance in staff_duties:
+            if is_time_range(sd_instance):
+                sd_instance.time_date = timezone.now() + timezone.timedelta(hours=11)
+                sd_instance.save()
+                status = 'success'
+                break
 
     except ObjectDoesNotExist:
-        status = 'not_found'
+        status = 'fail'
 
     return JsonResponse({'status': status})
