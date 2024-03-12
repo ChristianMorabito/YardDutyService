@@ -5,14 +5,15 @@ from django.shortcuts import render
 from .models import StaffDuty
 
 
+WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+
+def current_time_date():
+    return timezone.now() + timezone.timedelta(hours=11)
+
+
 def get_today():
-    weekday_names = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-    return weekday_names[(timezone.now() + timezone.timedelta(hours=11)).weekday()]
-
-
-def is_time_range(obj):
-    current_time = timezone.now() + timezone.timedelta(hours=11)
-    return obj.duty.start <= current_time.time() < obj.duty.end
+    return WEEKDAYS[current_time_date().weekday()]
 
 
 def about(request):
@@ -20,18 +21,18 @@ def about(request):
 
 
 def home(request):
-    staff_duties_dict = {}
+    staff_duties = {}
     today = get_today()
     user = request.user
     try:
-        staff_duties = list(StaffDuty.objects.filter(staff=user, duty__day=today))
-        for sd_instance in staff_duties:
-            staff_duties_dict[sd_instance] = is_time_range(sd_instance)
+        sd_list = list(StaffDuty.objects.filter(staff=user, duty__day=today))
+        for sd_instance in sd_list:
+            staff_duties[sd_instance] = sd_instance.duty.start <= current_time_date().time() < sd_instance.duty.end
 
     except ObjectDoesNotExist:
         pass
 
-    context = {'title': 'Home', 'staff_duties': staff_duties_dict}
+    context = {'title': 'Home', 'staff_duties': staff_duties}
 
     return render(request, 'home/home.html', context)
 
@@ -43,13 +44,12 @@ def update_duty(request):
 
     try:
 
-        staff_duties = list(StaffDuty.objects.filter(staff=user, duty__day=today))
-        for sd_instance in staff_duties:
-            if is_time_range(sd_instance):
-                sd_instance.time_date = timezone.now() + timezone.timedelta(hours=11)
+        sd_list = list(StaffDuty.objects.filter(staff=user, duty__day=today))
+        for sd_instance in sd_list:
+            if sd_instance.duty.start <= current_time_date().time() < sd_instance.duty.end:
+                sd_instance.time_date = current_time_date()
                 sd_instance.save()
                 status = 'success'
-                break
 
     except ObjectDoesNotExist:
         status = 'fail'

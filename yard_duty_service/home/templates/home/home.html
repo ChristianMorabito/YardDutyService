@@ -2,21 +2,94 @@
 
 
 {% block content %}
-    <h2>Today's Duties</h2>
+{#TODO: FIX - PUT IN NEW FILE#}
+    <style>
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
+        }
+
+        th {
+          white-space: nowrap; /* Ensures that the text doesn't wrap */
+        }
+  </style>
+
+
+    <h1>Your Duties</h1>
+    <hr>
+        <h2>Today</h2>
+        <ul>
         {% if staff_duties %}
-            <ul>
-            {% for sd_instance, sd_bool in staff_duties.items %}
-                <li>
-                    {{ sd_instance }}
-                      {% if sd_bool %}
-                        <button id="updateButton">Update Duty</button>
-                      {% endif %}
-               </li>
+            {% for staff_duty, bool in staff_duties.items %}
+            <li>
+                {{ staff_duty }}
+                {% if bool %}
+                    <button id="updateButton">PRESS ME</button>
+                {% endif  %}
+
+           </li>
             {% endfor %}
-                </ul>
+        </ul>
         {% else %}
             <p>No staff duties today.</p>
         {% endif %}
+    <br>
+
+    <h2>Remainder of Week</h2>
+    <ul>
+        <li>TODO</li>
+    </ul>
+    <br>
+
+    <h2>Next week</h2>
+    <ul>
+        <li>TODO - make self closing</li>
+    </ul>
+
+    <br><br>
+    <h1>Staff Duties</h1>
+    <hr>
+    <table>
+        <tr>
+            <th></th>
+            <th>Admin X-ing</th>
+            <th>MPH X-ing</th>
+            <th>Rear Gate</th>
+            <th>Primary A</th>
+            <th>Primary B</th>
+            <th>Courts</th>
+            <th>MPH & Chapel Toilets</th>
+            <th>Oval</th>
+            <th>Sport Centre</th>
+        </tr>
+        <tr>
+            <th>(A) Mon - Before School 1</th>
+        </tr>
+        <tr>
+            <th>(A) Mon - Before School 2</th>
+        </tr>
+        <tr>
+            <th>(A) Mon - Recess</th>
+        </tr>
+        <tr>
+            <th>(A) Mon - Lunch 1</th>
+        </tr>
+        <tr>
+            <th>(A) Mon - Lunch 2</th>
+        </tr>
+
+        <tr>
+            <th>(A) Mon - After School</th>
+        </tr>
+    </table>
+
+
 
 <script>
 
