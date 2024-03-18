@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Duty, StaffDuty
+from .models import Duty, StaffDuty, Year, Holiday, Term
 
 
 class StaffDutyAdmin(admin.ModelAdmin):
@@ -13,5 +13,9 @@ class StaffDutyAdmin(admin.ModelAdmin):
 
 admin.site.register(StaffDuty, StaffDutyAdmin)
 admin.site.register(Duty)
+admin.site.register(Holiday)
+admin.site.register(Term)
+admin.site.register(Year)
+
 
 

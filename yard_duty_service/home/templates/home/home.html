@@ -16,7 +16,7 @@
         }
 
         th {
-          white-space: nowrap; /* Ensures that the text doesn't wrap */
+          white-space: nowrap;
         }
   </style>
 
@@ -54,41 +54,16 @@
 
     <br><br>
     <h1>Staff Duties</h1>
-    <hr>
-    <table>
-        <tr>
-            <th></th>
-            <th>Admin X-ing</th>
-            <th>MPH X-ing</th>
-            <th>Rear Gate</th>
-            <th>Primary A</th>
-            <th>Primary B</th>
-            <th>Courts</th>
-            <th>MPH & Chapel Toilets</th>
-            <th>Oval</th>
-            <th>Sport Centre</th>
-        </tr>
-        <tr>
-            <th>(A) Mon - Before School 1</th>
-        </tr>
-        <tr>
-            <th>(A) Mon - Before School 2</th>
-        </tr>
-        <tr>
-            <th>(A) Mon - Recess</th>
-        </tr>
-        <tr>
-            <th>(A) Mon - Lunch 1</th>
-        </tr>
-        <tr>
-            <th>(A) Mon - Lunch 2</th>
-        </tr>
 
-        <tr>
-            <th>(A) Mon - After School</th>
-        </tr>
-    </table>
+    <br>
 
+    {% for line in table_data %}
+
+        <p>{{ line }}</p>
+
+    {% endfor %}
+
+    <br>
 
 
 <script>
