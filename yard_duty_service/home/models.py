@@ -57,6 +57,7 @@ class Duty(models.Model):
 	]
 
 	TIME_CHOICES = [
+		('17:00 - 23:59', 'test'),
 		('8:15 - 8:35', 'Before School 1'),
 		('8:35 - 9:00', 'Before School 2'),
 		('10:55 - 11:20', 'Recess'),

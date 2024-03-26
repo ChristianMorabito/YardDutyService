@@ -1,27 +1,8 @@
 {% extends "home/base.html" %}
 
-
 {% block content %}
-{#TODO: FIX - PUT IN NEW FILE#}
-    <style>
-        table {
-          border-collapse: collapse;
-          width: 100%;
-        }
 
-        th, td {
-          border: 1px solid #ddd;
-          padding: 8px;
-          text-align: left;
-        }
-
-        th {
-          white-space: nowrap;
-        }
-  </style>
-
-
-    <h1>Your Duties</h1>
+    <h1 id="userDuties"></h1>
     <hr>
         <h2>Today</h2>
         <ul>
@@ -35,10 +16,11 @@
 
            </li>
             {% endfor %}
-        </ul>
+
         {% else %}
-            <p>No staff duties today.</p>
+            <li>No staff duties today.</li>
         {% endif %}
+    </ul>
     <br>
 
     <h2>Remainder of Week</h2>
@@ -52,67 +34,12 @@
         <li>TODO - make self closing</li>
     </ul>
 
-    <br><br>
+    <br>
     <h1>Staff Duties</h1>
+    <hr>
+    <div id="tableMain"></div>
 
     <br>
-
-    {% for line in table_data %}
-
-        <p>{{ line }}</p>
-
-    {% endfor %}
-
-    <br>
-
-
-<script>
-
-    document.addEventListener('DOMContentLoaded', function() {
-    const updateButton = document.getElementById('updateButton');
-
-    updateButton.addEventListener('click', function() {
-        fetch('/update_duty/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                console.log('Duty updated successfully');
-            }
-            else {
-                console.log(data.status);
-            }
-        });
-    });
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-});
-
-</script>
-
-
-
-
-
 
 
 {% endblock content %}
