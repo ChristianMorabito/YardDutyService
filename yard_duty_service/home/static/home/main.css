@@ -1,11 +1,16 @@
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 65%;
+    font-size: 0.8em; /* Adjust the value as needed */
 }
 
 
-logged-in td:hover {
-    background-color: #a8a8e8;
+.hover {
+  background-color: yellow;
+}
+
+.mouseDown {
+    background-color: green;
 }
 
 th, td {
@@ -13,3 +18,10 @@ th, td {
     padding: 5px;
     text-align: center;
 }
+
+/*#updateArea {*/
+/*    position: relative;*/
+/*  display: block;*/
+/*  margin-right: 200px;*/
+/*}*/
+

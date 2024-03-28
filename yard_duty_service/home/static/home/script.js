@@ -1,3 +1,5 @@
+let updateSet = new Set();
+
 function createTable(data, userJson) {
     let divMain = document.getElementById("tableMain");
 
@@ -32,17 +34,9 @@ function createTable(data, userJson) {
                     }
                     // NON-ROW HEADING
                     else {
-                        if (x === 0) {
-                            cell = document.createElement("th");
-                            cell.textContent = data.titleSide[y-1];
-                        }
-                        else {
-                            cell = document.createElement(x === 0? "th": "td");
-                            cell.textContent = data.week[ref][day][y-1][x-1];
-                            if (userJson.admin) {
-                                cell.classList.add("logged-in");
-                            }
-                        }
+                        cell = document.createElement(x === 0? "th": "td");
+                        cell.textContent = x === 0? data.titleSide[y-1]: data.week[ref][day][y-1][x-1];
+                        if (x > 0 && userJson.admin) tableCellEventListener(cell);
                         cell.id = `${ref}_${day}_${y-1}_${x-1}`;
                     }
 
@@ -60,6 +54,30 @@ function createTable(data, userJson) {
         divMain.appendChild(divWeek);
 
     }
+}
+
+
+function tableCellEventListener(cell) {
+
+
+    cell.addEventListener('mouseover', function() {
+        cell.classList.add('hover');
+    });
+
+    cell.addEventListener('click', function() {
+        if (cell.classList.contains('mouseDown')) {
+            cell.classList.remove('mouseDown');
+            updateSet.delete(cell.id);
+        }
+        else {
+            cell.classList.add('mouseDown');
+            updateSet.add(cell.id);
+        }
+    });
+
+    cell.addEventListener('mouseout', function() {
+        cell.classList.remove('hover');
+    });
 
 }
 
@@ -85,7 +103,7 @@ function setUserTitle(userJson) {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    const updateButton = document.getElementById('updateButton');
+    let updateBtn = document.getElementById('updateBtn');
 
     // fetch for userJson data;
     fetch('/get_username/')
@@ -108,8 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error fetching username:', error);
     });
 
-    if (updateButton) {
-        updateButton.addEventListener('click', function() {
+    if (updateBtn) {
+        updateBtn.addEventListener('click', function() {
             fetch('/update_duty/', {
                 method: 'POST',
                 headers: {
@@ -132,4 +150,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 });
-
